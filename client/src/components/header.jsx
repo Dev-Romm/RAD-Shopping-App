@@ -1,20 +1,33 @@
 import { Link } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import "../styles/header.css";
 
 function Header() {
     const handleLogout = () => {
-        // Logic for logging out the user
-        console.log("User logged out");
-        // Redirect to home or login page if needed
+         Swal.fire({
+            title: "Are you sure?",
+            text: "You will be logged out.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, log out",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem("token");
+                Swal.fire("Logged out!", "You have been logged out.", "success");
+                navigate("/");
+            }
+        });
+        
     };
   return (
     <header>
       <h1>Shopping Cart</h1>
       <nav>
         <ul>
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/home">Home</Link></li>
           <li><Link to="/cart">Cart</Link></li>
-          <li onClick={handleLogout}>Log Out</li>
+          <li onClick={handleLogout}><button>Log Out</button></li>
         </ul>
       </nav>
     </header>

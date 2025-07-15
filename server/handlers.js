@@ -1,9 +1,15 @@
+const { Customer } = require( "./dbschemas");
+const { hashPassword, comparePassword, generateToken} = require("./helpers");
+
+
+
+
 async function register(req, res) {
   const { name, email, password } = req.body;
 
   try {
     const hashed = await hashPassword(password);
-    const user = new User({ name, email, password: hashed });
+    const user = new Customer({ name, email, password: hashed });
     await user.save();
 
     const token = generateToken(user);
@@ -19,13 +25,13 @@ async function login(req, res) {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await Customer.findOne({ email });
     if (!user)
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid email" });
 
     const match = await comparePassword(password, user.password);
     if (!match)
-      return res.status(400).json({ message: "Invalid email or password" });
+      return res.status(400).json({ message: "Invalid password" });
 
     const token = generateToken(user);
     res.json({ token, user: { name: user.name, email: user.email } });
@@ -79,3 +85,12 @@ async function removeFromCart(req, res) {
   await user.save();
   res.json({ orders: user.orders });
 }
+
+module.exports = {
+  register,
+  login,
+  getCart,
+  addToCart,
+  adjustQuantity,
+  removeFromCart
+};

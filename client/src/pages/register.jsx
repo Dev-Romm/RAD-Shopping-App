@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import API from './api';
+import API from '../components/api';
+import { Link } from 'react-router-dom';
+import '../styles/register.css';
 
 function Register() {
     const [form, setForm] = useState({ name: '', email: '', password: '' });
@@ -8,7 +10,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await API.post('/register', form);
+      const res = await API.post('/api/register', form);
       localStorage.setItem('token', res.data.token);
       setUser(res.data.user);
     } catch (err) {
@@ -16,7 +18,7 @@ function Register() {
     }
   };
     return (
-      <div>
+      <div className='register-container'>
         <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input placeholder="Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
@@ -25,6 +27,7 @@ function Register() {
         <button type="submit">Register</button>
         {error && <p>{error}</p>}
       </form>
+      <p>Already have an account? <Link to="/">Login</Link></p>
       </div> 
     );
 }

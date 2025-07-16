@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import API from "../components/api";
 import axios from "axios";
 import "../styles/home.css";
+import Header from "../components/header";
+import toast from "react-hot-toast";
 
 function Home() {
   const [items, setItems] = useState([]);
@@ -22,11 +24,13 @@ function Home() {
   const addToCart = async (itemName) => {
     await API.post("/api/cart/add", { item: itemName, quantity: 1 });
     setCartItems([...cartItems, { item: itemName, quantity: 1 }]);
+    toast.success(`${itemName} added to cart!`);
   };
 
 const isInCart = (itemName) => Array.isArray(cartItems) && cartItems.some((i) => i.item === itemName);
   return (
     <div>
+      <Header />
       <h2>All Products</h2>
       <div className="home-products">
         {items.map((product) => (

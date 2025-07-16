@@ -23,7 +23,10 @@ async function register(req, res) {
 
 async function login(req, res) {
   const { email, password } = req.body;
-
+  console.log("Login attempt with email:", email); // Debugging line to check email
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
   try {
     const user = await Customer.findOne({ email });
     if (!user)
@@ -41,14 +44,14 @@ async function login(req, res) {
 }
 
 async function getCart(req, res) {
-  const user = await User.findById(req.user.id);
+  const user = await Customer.findById(req.user.id);
   res.json({ orders: user.orders });
 }
 
 async function addToCart(req, res) {
   const { item, quantity } = req.body;
 
-  const user = await User.findById(req.user.id);
+  const user = await Customer.findById(req.user.id);
   const existing = user.orders.find((o) => o.item === item);
 
   if (existing) {
@@ -64,7 +67,7 @@ async function addToCart(req, res) {
 async function adjustQuantity(req, res) {
   const { item, quantity } = req.body;
 
-  const user = await User.findById(req.user.id);
+  const user = await Customer.findById(req.user.id);
   const order = user.orders.find((o) => o.item === item);
 
   if (order) {
@@ -79,7 +82,7 @@ async function adjustQuantity(req, res) {
 async function removeFromCart(req, res) {
   const { item } = req.body;
 
-  const user = await User.findById(req.user.id);
+  const user = await Customer.findById(req.user.id);
   user.orders = user.orders.filter((o) => o.item !== item);
 
   await user.save();

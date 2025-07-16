@@ -11,7 +11,7 @@ import Register from './pages/register'
 function App() {
  return (
   <div>
-    <Header />
+   
     <Routes>
       <Route exact path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />

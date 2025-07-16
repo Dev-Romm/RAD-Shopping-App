@@ -22,12 +22,12 @@ function Header() {
     };
   return (
     <header>
-      <h1>Shopping Cart</h1>
+      <h1>RAD Shopping App</h1>
       <nav>
         <ul>
           <li><Link to="/home">Home</Link></li>
           <li><Link to="/cart">Cart</Link></li>
-          <li onClick={handleLogout}><button>Log Out</button></li>
+          <li onClick={handleLogout} className="logout"><button>Log Out</button></li>
         </ul>
       </nav>
     </header>

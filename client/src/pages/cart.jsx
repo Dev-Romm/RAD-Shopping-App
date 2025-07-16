@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../components/api";
 import "../styles/cart.css";
+import Header from "../components/header";
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -18,7 +19,10 @@ function Cart() {
   };
 
   return (
+    <div>
+      <Header />
     <div className="cart-container">
+     
       <h2>Your Cart</h2>
       {cart.length === 0 ? (
         <p>Cart is empty</p>
@@ -34,6 +38,7 @@ function Cart() {
           <button onClick={proceedToCheckout}>Proceed to Checkout</button>
         </>
       )}
+    </div>
     </div>
   );
 }

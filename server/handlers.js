@@ -6,7 +6,7 @@ const { hashPassword, comparePassword, generateToken} = require("./helpers");
 
 async function register(req, res) {
   const { name, email, password } = req.body;
-
+  console.log("Register attempt with email:", email); // Debugging line to check email
   try {
     const hashed = await hashPassword(password);
     const user = new Customer({ name, email, password: hashed });
@@ -49,7 +49,7 @@ async function getCart(req, res) {
 }
 
 async function addToCart(req, res) {
-  const { item, quantity } = req.body;
+  const { item, quantity, price } = req.body;
 
   const user = await Customer.findById(req.user.id);
   const existing = user.orders.find((o) => o.item === item);
@@ -57,7 +57,7 @@ async function addToCart(req, res) {
   if (existing) {
     existing.quantity += quantity;
   } else {
-    user.orders.push({ item, quantity });
+    user.orders.push({ item, quantity, price });
   }
 
   await user.save();

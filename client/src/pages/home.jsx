@@ -22,8 +22,9 @@ function Home() {
   }, []);
 
   const addToCart = async (itemName) => {
-    await API.post("/api/cart/add", { item: itemName, quantity: 1 });
-    setCartItems([...cartItems, { item: itemName, quantity: 1 }]);
+    await API.post("/api/cart/add", { item: itemName, quantity: 1, price: items.find(item => item.title === itemName)?.price || 0 });
+    console.log(`Added ${itemName} to cart, price: ${items.find(item => item.title === itemName)?.price || 0}`);
+    setCartItems([...cartItems, { item: itemName, quantity: 1, price: items.find(item => item.title === itemName)?.price || 0 }]);
     toast.success(`${itemName} added to cart!`);
   };
 
@@ -46,10 +47,10 @@ const isInCart = (itemName) => Array.isArray(cartItems) && cartItems.some((i) =>
             />
             <p>${product.price}</p>
             <button
-              disabled={isInCart(product.title)}
+             
               onClick={() => addToCart(product.title)}
             >
-              {isInCart(product.title) ? "Already in Cart" : "Add to Cart"}
+              {isInCart(product.title) ? `Increase: ${cartItems.find(item => item.item === product.title)?.quantity || 0}` : "Add to Cart"}
             </button>
           </div>
         ))}

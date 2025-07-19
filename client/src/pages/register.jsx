@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import API from "../components/api";
 import { Link } from "react-router-dom";
 import "../styles/register.css";
+import toast from "react-hot-toast";
 
 function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -13,8 +14,10 @@ function Register() {
       const res = await API.post("/api/register", form);
       localStorage.setItem("token", res.data.token);
       setUser(res.data.user);
+      toast.success("Registration successful!");
     } catch (err) {
       setError("Registration failed");
+      toast.error(err.response?.data?.message || "An error occurred");
     }
   };
   return (
